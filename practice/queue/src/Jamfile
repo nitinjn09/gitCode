@@ -1,0 +1,3 @@
+SubDir TOP queue src ;
+
+Main queue : queue_main.c queue_func.c ;

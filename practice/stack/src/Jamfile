@@ -1,0 +1,3 @@
+SubDir TOP stack src ;
+
+Main stack : stack_main.c stack_func.c ;

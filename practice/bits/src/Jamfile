@@ -1,0 +1,3 @@
+SubDir bits src ;
+
+Main bits : bits_main.c bits_func.c ;

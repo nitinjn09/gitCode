@@ -1,0 +1,3 @@
+SubDir TOP tree src ;
+
+Main tree : tree_main.c tree_func.c queue_func.c stack_func.c ;

@@ -1,0 +1,4 @@
+SubDir TOP graph src ;
+
+Main graph : graph_main.c graph_func.c ;
+

@@ -1,0 +1,4 @@
+SubDir TOP linked_list src ;
+
+Main list : linked_list.c list_func.c ;
+
