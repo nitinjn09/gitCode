@@ -1,0 +1,259 @@
+
+//server.c
+
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <errno.h>
+#include <string.h>
+#include <sys/types.h>
+#include <time.h> 
+#include <ifaddrs.h>
+#include <pthread.h>
+
+struct sockaddr_in serv_addr;
+int client_socket;
+
+void *recv_data()
+{
+  char recvBuff[1024];
+  int  read_bytes;
+
+  printf("\nYou are in recv_data function\n");
+  while(1) {
+   bzero(recvBuff,sizeof(recvBuff));
+   read_bytes = read(client_socket,recvBuff,sizeof(recvBuff));
+   if (read_bytes < 0)
+      {
+      perror("ERROR reading from socket");
+      exit(1);
+      }
+   
+   printf("Message from client: %s\n",recvBuff);
+    sleep(1);
+  }
+}
+
+
+void *send_data()
+{
+  struct ifaddrs *if_addr, *tmp;
+  struct sockaddr_in client_addr;
+  char sendBuff[1024];
+  char recvBuff[1024];
+  int send_socket, n;
+  char clientip[12];
+  int clientport, flag = 0;
+  socklen_t addr_size = sizeof(struct sockaddr_in);
+
+  time_t ticks;
+
+  pthread_t tid_rd;
+  
+  pthread_attr_t attr_rd;
+    
+  
+  printf("\nYou are in send_data function\n");
+
+  memset(&sendBuff, '0', sizeof(sendBuff));
+  memset(&serv_addr, '0', sizeof(serv_addr));
+  memset(&client_addr, '0', sizeof(client_addr));
+  memset(&clientip, '0', sizeof(clientip));
+
+  /* Get the interface address of the local machine and assign that to server address */
+  if (getifaddrs(&if_addr) == -1) 
+    {
+       perror("getifaddrs");
+       exit(EXIT_FAILURE);
+    }
+
+  tmp = if_addr;
+  while (tmp)
+  {
+    if (tmp->ifa_addr && (tmp->ifa_addr->sa_family == AF_INET)) {
+        struct sockaddr_in *pAddr = (struct sockaddr_in *)tmp->ifa_addr;
+        if (strcmp(inet_ntoa(pAddr->sin_addr), "127.0.0.1") != 0) {
+          printf("\nServer adress: %s\n", inet_ntoa(pAddr->sin_addr));
+             serv_addr.sin_addr.s_addr = inet_addr(inet_ntoa(pAddr->sin_addr));
+             break;
+          }
+       }
+       tmp = tmp->ifa_next;
+    }
+
+  serv_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+  serv_addr.sin_family = AF_INET;
+  serv_addr.sin_port = htons(5000); 
+  /* Create server socket */
+  send_socket = socket(AF_INET, SOCK_STREAM, 0);
+  /* Bind server socket to address */
+  bind(send_socket, (struct sockaddr*)&serv_addr, sizeof(serv_addr));
+  /* Create queue to listen on the socket */
+  listen(send_socket, 1000);
+
+ /*
+    ticks = time(NULL);
+    snprintf(sendBuff, sizeof(sendBuff), "server_socket: %d   time:  %.24s\r\n",send_socket, ctime(&ticks));         
+ */
+
+  /* Establish  connection with client*/
+  client_socket = accept(send_socket, (struct sockaddr*)NULL, NULL);
+
+  getpeername(client_socket, (struct sockaddr *)&client_addr, &addr_size); 
+  strcpy(clientip, inet_ntoa(client_addr.sin_addr));
+  printf("Client connected. Address:   %s:%d :: %d\n",clientip,(int)ntohs(client_addr.sin_port),client_socket);
+ 
+  pthread_attr_init(&attr_rd);
+
+  /* Create thread to recieve data from client */
+  if (pthread_create(&tid_rd, &attr_rd, recv_data, NULL)) {
+     printf("\nERROR: Pthread create error recv_data. Exiting...");
+     exit(EXIT_FAILURE);
+  }
+
+  while(1) {   
+   /* Write a response to the client */
+   bzero(sendBuff,sizeof(sendBuff));
+   snprintf(sendBuff,sizeof(sendBuff), "Server says Hi.. ");
+   n = write(client_socket,sendBuff, sizeof(sendBuff));
+   
+   if (n < 0)
+      {
+      perror("ERROR writing to socket");
+      exit(1);
+      }
+   sleep(1);
+  }  
+
+
+}
+
+
+
+
+
+int main(int argc, char *argv[]) 
+{
+  int choice;
+  pthread_t tid_sd;
+  
+  pthread_attr_t attr_sd;
+  pthread_attr_init(&attr_sd);
+
+  if (pthread_create(&tid_sd, &attr_sd, send_data, NULL)) {
+    printf("\nERROR: Pthread create error send_data. Exiting...");
+    exit(EXIT_FAILURE);
+  }
+
+
+
+  while(1) {
+/*
+    printf("\nEnter your choice:: \n 0. Exit \n 1. Send data to client \n 2. Recieve data from client \n ");
+    scanf("%d", &choice);
+
+    switch(choice) {
+
+      case 1: send_data();
+      break;
+
+      case 2: recv_data();
+      break;
+
+      case 0: exit(1);
+
+      default: printf("\n Invalid choice. Enter again\n");
+      break;
+    }
+   */ 
+    sleep(5);
+  }
+
+  //printf("I am server\n");
+
+  return 0;
+}
+
+
+
+//client.c
+
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <netdb.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <errno.h>
+#include <arpa/inet.h> 
+
+int main(int argc, char *argv[])
+{
+
+    int sockfd = 0, connfd, n = 0;
+    char recvBuff[1024], sendBuff[1024];
+    struct sockaddr_in serv_addr; 
+    if(argc != 2)
+    {
+        printf("\n Usage: %s <ip of server> \n",argv[0]);
+        return 1;
+    } 
+
+    memset(recvBuff, '0',sizeof(recvBuff));
+    memset(sendBuff, '0', sizeof(sendBuff));
+    if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+    {
+        printf("\n Error : Could not create socket \n");
+        return 1;
+    } 
+
+    memset(&serv_addr, '0', sizeof(serv_addr)); 
+
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(5000); 
+
+    if(inet_pton(AF_INET, argv[1], &serv_addr.sin_addr)<=0)
+    {
+        printf("\n inet_pton error occured\n");
+        return 1;
+    } 
+
+    if( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+    {
+       printf("\n Error : Connect Failed \n");
+       return 1;
+    } 
+    
+
+while(1) {
+   bzero(sendBuff,sizeof(sendBuff));
+   //fgets(buffer,255,stdin);
+   snprintf(sendBuff, sizeof(sendBuff), "Client says Hi..");
+   /* Send message to the server */
+   n = write(sockfd, sendBuff, strlen(sendBuff));
+   if (n < 0)
+   {
+      perror("ERROR writing to socket");
+      exit(1);
+   }
+   
+   /* Now read server response */
+   bzero(recvBuff,sizeof(recvBuff));
+   n = read(sockfd, recvBuff, sizeof(recvBuff)); 
+   if (n < 0)
+   {
+      perror("ERROR reading from socket");
+      exit(1);
+   }
+   printf("Message from server: %s\n",recvBuff);
+   sleep(1);
+}
+return 0;
+}
+
+

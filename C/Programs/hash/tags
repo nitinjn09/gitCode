@@ -1,0 +1,22 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+HASH_TABLE_LOAD_FACTOR	include/hash.h	/^#define HASH_TABLE_LOAD_FACTOR /;"	d
+HashTable	include/hash.h	/^} HashTable;$/;"	t	typeref:struct:hashTable
+INVALID	include/hash.h	/^#define INVALID /;"	d
+Node	include/hash.h	/^} Node;$/;"	t	typeref:struct:node
+create_hash_table	src/hash_func.c	/^HashTable* create_hash_table (int input_size)$/;"	f
+data	include/hash.h	/^        int data;$/;"	m	struct:node
+hashTable	include/hash.h	/^typedef struct hashTable {$/;"	s
+hash_func	src/hash_func.c	/^int hash_func (HashTable *hash, int item)$/;"	f
+insert_item_in_hash_table	src/hash_func.c	/^void insert_item_in_hash_table (HashTable *hash, int item)$/;"	f
+main	src/hash_main.c	/^int main ()$/;"	f
+next	include/hash.h	/^        struct node *next;$/;"	m	struct:node	typeref:struct:node::node
+node	include/hash.h	/^typedef struct node {$/;"	s
+search_hash_table	src/hash_func.c	/^int search_hash_table (HashTable *hash, int item)$/;"	f
+show_table	src/hash_func.c	/^void show_table (HashTable *hash)$/;"	f
+size	include/hash.h	/^    int size;$/;"	m	struct:hashTable
+table	include/hash.h	/^    Node *table;$/;"	m	struct:hashTable

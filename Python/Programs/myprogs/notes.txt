@@ -1,0 +1,3 @@
+#run http server 
+
+python -m SimpleHTTPServer

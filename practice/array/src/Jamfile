@@ -1,4 +1,0 @@
-SubDir array src ;
-
-Main array : array_main.c array_func.c ;
-

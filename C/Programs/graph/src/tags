@@ -1,0 +1,27 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+E	graph.h	/^    int E;$/;"	m	struct:ad_matrix
+GMatrix	graph.h	/^} GMatrix;$/;"	t	typeref:struct:ad_matrix
+Graph	graph.h	/^} Graph;$/;"	t	typeref:struct:graph
+List	graph.h	/^} List;$/;"	t	typeref:struct:ad_list
+V	graph.h	/^    int V;$/;"	m	struct:ad_matrix
+ad_list	graph.h	/^typedef struct ad_list {$/;"	s
+ad_matrix	graph.h	/^typedef struct ad_matrix {$/;"	s
+add_edge	graph_func.c	/^void add_edge (Graph *graph, int src, int dest)$/;"	f
+adjMatrixOfGraph	graph_func.c	/^GMatrix* adjMatrixOfGraph(int V, int E) {$/;"	f
+array	graph.h	/^    struct ad_list *array;$/;"	m	struct:graph	typeref:struct:graph::ad_list
+create_graph	graph_func.c	/^Graph* create_graph (int num_node)$/;"	f
+dest	graph.h	/^    int dest;$/;"	m	struct:list_node
+graph	graph.h	/^typedef struct graph {$/;"	s
+head	graph.h	/^    struct list_node *head;$/;"	m	struct:ad_list	typeref:struct:ad_list::list_node
+lNode	graph.h	/^} lNode;$/;"	t	typeref:struct:list_node
+list_node	graph.h	/^typedef struct list_node {$/;"	s
+main	graph_main.c	/^int main ()$/;"	f
+matrix	graph.h	/^    int **matrix;$/;"	m	struct:ad_matrix
+next	graph.h	/^    struct list_node *next;$/;"	m	struct:list_node	typeref:struct:list_node::list_node
+print_graph	graph_func.c	/^void print_graph (Graph *graph) $/;"	f
+v	graph.h	/^    int v;$/;"	m	struct:graph

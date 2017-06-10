@@ -1,0 +1,26 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+FALSE	array.h	/^#define FALSE /;"	d
+Heap	array.h	/^} Heap;$/;"	t	typeref:struct:heap
+TRUE	array.h	/^#define TRUE /;"	d
+array	array.h	/^    int *array;$/;"	m	struct:heap
+bubble_sort	bubble_sort.c	/^void bubble_sort (int *arr, int size)$/;"	f
+create_maxheap	heap_sort.c	/^Heap* create_maxheap (int *arr, int size)$/;"	f
+delete_item_from_heap	heap_sort.c	/^void delete_item_from_heap (Heap *maxheap, int item) $/;"	f
+heap	array.h	/^typedef struct heap {$/;"	s
+heap_sort	heap_sort.c	/^void heap_sort (int *arr, int size)$/;"	f
+heapify	heap_sort.c	/^void heapify (Heap *maxheap, int index)$/;"	f
+main	array_main.c	/^int main () $/;"	f
+merge	merge_sort.c	/^void merge (int *arr, int left, int mid, int right) $/;"	f
+merge_sort	merge_sort.c	/^void merge_sort ( int *arr, int left, int right) $/;"	f
+partition	quick_sort.c	/^int partition (int *arr, int left, int right, int pivot)$/;"	f
+quick_sort	quick_sort.c	/^void quick_sort (int *arr, int left, int right)$/;"	f
+search_element_in_array	array_func.c	/^int search_element_in_array (int *arr, int size, int item) $/;"	f
+selection_sort	selection_sort.c	/^void selection_sort (int *arr, int size)$/;"	f
+show_array	array_func.c	/^void show_array (int *arr, int size)$/;"	f
+size	array.h	/^    int size;$/;"	m	struct:heap
+swap_items	array_func.c	/^void swap_items (int *a, int *b)$/;"	f

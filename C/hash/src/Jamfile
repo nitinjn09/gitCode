@@ -1,0 +1,3 @@
+SubDir TOP hash src ;
+
+Main hash : hash_main.c hash_func.c ;
